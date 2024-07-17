@@ -11,7 +11,10 @@
 </template>
 
 <script setup>
-import {useRouter} from 'vue-router'
+// Использование middleware на уровне компонента, без этого не работает
+definePageMeta({
+  middleware: 'auth'
+})
 
 const router = useRouter()
 
@@ -20,14 +23,9 @@ const logout = async () => {
     await $fetch('/api/logout', {
       method: 'POST'
     })
-    router.push('/login')
+    await router.push('/login')
   } catch (error) {
     console.error(error)
   }
 }
-
-// Использование middleware на уровне компонента, без этого не работает
-definePageMeta({
-  middleware: 'auth'
-})
 </script>

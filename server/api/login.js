@@ -9,17 +9,18 @@ export default defineEventHandler(async (event) => {
             "Content-Type": "application/json"
         },
         body,
-        credentials: 'include',
     })
 
     // Set HttpOnly cookie
-    setCookie(event, 'auth_token', response.token, {
+    setCookie(event, config.public.cookieName, response.token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         path: '/',
-        maxAge: config.public.cookieExpires,
+        expires: new Date(Date.now() + config.public.cookieExpires)
     })
+
+    console.log('Cookie set:', parseCookies(event))
 
     return response
 })
