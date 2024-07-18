@@ -14,7 +14,7 @@ export const useAuth = () => {
         const data: any = await $fetch('/api/auth/auth_me', {
             method: 'GET'
         })
-        authStore.setUser(data, response.token)
+        authStore.setUser(data)
 
         return user.value
     }
@@ -31,7 +31,7 @@ export const useAuth = () => {
         const data: any = await $fetch('/api/auth/auth_me', {
             method: 'GET'
         })
-        authStore.setUser(data, response.token)
+        authStore.setUser(data)
         return user.value
     }
 
@@ -40,7 +40,7 @@ export const useAuth = () => {
             method: 'POST'
         })
 
-        authStore.setUser(user, '')
+        authStore.setUser(user)
     }
 
     const fetchUser = async () => {
@@ -52,7 +52,7 @@ export const useAuth = () => {
                     method: 'GET',
                     headers: useRequestHeaders(['cookie']) as HeadersInit
                 })
-                authStore.setUser(data, tokenValue)
+                authStore.setUser(data)
             } catch (e) {
                 await logout()
             }

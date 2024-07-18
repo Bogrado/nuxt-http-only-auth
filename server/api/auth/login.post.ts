@@ -39,5 +39,5 @@ export default defineEventHandler(async (event) => {
         expires: rememberMe ? new Date(Date.now() + config.public.cookieRememberMeExpires) : new Date(Date.now() + config.public.cookieExpires)
     })
 
-    return authToken
+    return {}
 })
