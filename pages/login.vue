@@ -30,8 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
-import {useAuth} from '@/composables/useAuth'
 
 const email = ref('')
 const password = ref('')
@@ -39,5 +37,6 @@ const {login} = useAuth()
 
 const handleLogin = async () => {
   await login(email.value, password.value)
+  navigateTo('/dashboard')
 }
 </script>

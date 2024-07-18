@@ -12,8 +12,6 @@
 
 <script setup lang="ts">
 
-import {useAuth} from '@/composables/useAuth'
-
 definePageMeta({
   middleware: 'auth'
 })
@@ -22,5 +20,6 @@ const {logout} = useAuth()
 
 const handleLogout = async () => {
   await logout()
+  navigateTo('/')
 }
 </script>
