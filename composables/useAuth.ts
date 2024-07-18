@@ -12,7 +12,7 @@ export const useAuth = () => {
 
 
         const data: any = await $fetch('/api/auth/auth_me', {
-            method: 'POST'
+            method: 'GET'
         })
         authStore.setUser(data, response.token)
 
@@ -25,12 +25,13 @@ export const useAuth = () => {
             body: {email, password, rememberMe},
         })
 
+        console.log("login done", response.token)
+
 
         const data: any = await $fetch('/api/auth/auth_me', {
-            method: 'POST'
+            method: 'GET'
         })
         authStore.setUser(data, response.token)
-        console.log('ssssssss', data, response.token)
         return user.value
     }
 
@@ -44,14 +45,14 @@ export const useAuth = () => {
 
     const fetchUser = async () => {
         const token: any = useCookie(config.public.cookieName)
-        console.log(token)
-        if (!user.value && token) {
+        const tokenValue = token.value
+        if (!user.value && tokenValue) {
             try {
                 const data: any = await $fetch('/api/auth/auth_me', {
-                    method: 'POST',
+                    method: 'GET',
                     headers: useRequestHeaders(['cookie']) as HeadersInit
                 })
-                authStore.setUser(data, token)
+                authStore.setUser(data, tokenValue)
             } catch (e) {
                 await logout()
             }

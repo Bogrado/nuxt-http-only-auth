@@ -5,12 +5,11 @@ export default defineEventHandler(async (event) => {
     let userData: any = null
 
     if (!token) {
-        console.log('No token found', token)
         return userData
     }
 
     try {
-        userData = await $fetch(`${config.public.baseURL}/auth_me`, {
+        userData = await $fetch(`${config.public.baseUrl}/auth_me`, {
             method: 'GET',
             headers: {Authorization: `Bearer ${token}`}
         })

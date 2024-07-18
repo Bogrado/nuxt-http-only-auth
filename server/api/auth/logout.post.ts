@@ -1,4 +1,4 @@
-// server/api/auth/logout.ts
+// server/api/auth/logout.post.ts
 export default defineEventHandler((event) => {
     const config = useRuntimeConfig()
 

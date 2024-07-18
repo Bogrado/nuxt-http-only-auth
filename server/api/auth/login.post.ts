@@ -1,4 +1,4 @@
-// server/api/auth/login.ts
+// server/api/auth/login.post.ts
 export default defineEventHandler(async (event) => {
     const body = await readBody<{ email: string; password: string; rememberMe: boolean }>(event)
     const config = useRuntimeConfig()
@@ -39,5 +39,5 @@ export default defineEventHandler(async (event) => {
         expires: rememberMe ? new Date(Date.now() + config.public.cookieRememberMeExpires) : new Date(Date.now() + config.public.cookieExpires)
     })
 
-    return {}
+    return authToken
 })
