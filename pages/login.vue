@@ -2,7 +2,7 @@
   <div class="min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full space-y-8">
       <h2 class="mt-6 text-center text-3xl font-extrabold">Login</h2>
-      <form @submit.prevent="login">
+      <form @submit.prevent="handleLogin">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email" class="sr-only">Email address</label>
@@ -29,21 +29,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import {ref} from 'vue'
+import {useAuth} from '@/composables/useAuth'
 
 const email = ref('')
 const password = ref('')
-const router = useRouter()
+const {login} = useAuth()
 
-const login = async () => {
-  try {
-    await $fetch('/api/login', {
-      method: 'POST',
-      body: {email: email.value, password: password.value}
-    })
-    await router.push('/dashboard')
-  } catch (error) {
-    console.error(error)
-  }
+const handleLogin = async () => {
+  await login(email.value, password.value)
 }
 </script>
