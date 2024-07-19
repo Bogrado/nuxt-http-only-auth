@@ -37,6 +37,5 @@ const {login} = useAuth()
 
 const handleLogin = async () => {
   await login(email.value, password.value)
-  navigateTo('/dashboard')
 }
 </script>

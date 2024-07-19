@@ -1,6 +1,6 @@
 // server/api/auth/login.post.ts
 export default defineEventHandler(async (event) => {
-    const body = await readBody<{ email: string; password: string; rememberMe: boolean }>(event)
+    const body = await readBody<{ email: string; password: string; rememberMe: boolean; }>(event)
     const config = useRuntimeConfig()
 
     const {
@@ -9,10 +9,8 @@ export default defineEventHandler(async (event) => {
         rememberMe
     } = body
 
-    let authToken: any = null
-
     try {
-        authToken = await $fetch(`${config.public.baseUrl}/auth`, {
+        const response: { data: object, token: string } = await $fetch(`${config.public.baseUrl}/auth`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -23,21 +21,27 @@ export default defineEventHandler(async (event) => {
                 password,
             }
         })
+
+        setCookie(event, config.public.cookieName, response.token, { // устанавливает куки
+            httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+            expires: rememberMe ? new Date(Date.now() + config.public.cookieRememberMeExpires) : new Date(Date.now() + config.public.cookieExpires)
+        })
+        return response
+
     } catch (e: any) {
-        return createError({
-            statusCode: e.statusCode,
-            message: 'Wrong email or password',
-            statusMessage: e.statusMessage
+        if (e.data && e.data.statusCode) {
+            throw createError({
+                statusCode: e.data.statusCode,
+                statusMessage: e.data.message || 'Error from external API',
+                data: {error: e.data.error}
+            })
+        }
+        throw createError({
+            statusCode: e.statusCode || 500,
+            statusMessage: e.message || 'Internal Server Error'
         })
     }
-
-    setCookie(event, config.public.cookieName, authToken.token, { // устанавливает куки
-        httpOnly: true,
-        path: '/',
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production',
-        expires: rememberMe ? new Date(Date.now() + config.public.cookieRememberMeExpires) : new Date(Date.now() + config.public.cookieExpires)
-    })
-
-    return {} // ничего не возвращает
 })
