@@ -2,7 +2,8 @@
   <div class="min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full space-y-8">
       <h2 class="mt-6 text-center text-3xl font-extrabold">Login</h2>
-      <form @submit.prevent="handleLogin">
+      <v-preloader v-if="loading"/>
+      <form @submit.prevent="handleLogin" v-else>
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email" class="sr-only">Email address</label>
@@ -18,6 +19,7 @@
                    placeholder="Password">
           </div>
         </div>
+        <div v-if="error" class="text-red-500">{{ error }}</div>
         <div>
           <button type="submit"
                   class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -33,9 +35,18 @@
 
 const email = ref('')
 const password = ref('')
-const {login} = useAuth()
+const {login, error, clearError} = useAuth()
+const auth = useAuthStore()
+const loading = computed(() => auth.getLoading)
 
 const handleLogin = async () => {
-  await login(email.value, password.value)
+  await login({email: email.value, password: password.value})
+  if (!error.value) {
+    navigateTo('/dashboard')
+  }
 }
+
+onMounted(() => {
+  clearError()
+})
 </script>

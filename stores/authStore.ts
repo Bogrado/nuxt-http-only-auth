@@ -2,43 +2,57 @@ export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
     const user = ref<{} | null>(null)
     const error = ref<string | null>(null)
+    const loading = ref<boolean>(false)
 
     const setUser = (userData: {} | null) => {
         user.value = userData
     }
 
     const getUser = computed(() => user.value)
+    const clearError = () => error.value = null
 
-    const register = async (email: string, password: string, rememberMe: boolean = false) => {
+    const register = async (userData: Record<string, any>) => {
+        loading.value = true
         try {
             await $fetch('/api/auth/register', {
                 method: 'POST',
-                body: {email, password, rememberMe},
+                body: userData,
             })
+            clearError()
         } catch (err: any) {
             error.value = err.data?.message || 'Registration failed'
+        } finally {
+            loading.value = false
         }
     }
 
-    const login = async (email: string, password: string, rememberMe: boolean = false) => {
+    const login = async (credentials: { email: string; password: string; rememberMe?: boolean }) => {
+        loading.value = true
         try {
             await $fetch('/api/auth/login', {
                 method: 'POST',
-                body: {email, password, rememberMe},
+                body: credentials,
             })
             const data: {} = await $fetch('/api/auth/auth_me', {method: 'GET'})
             setUser(data)
+            clearError()
         } catch (err: any) {
             error.value = err.data?.message || 'Login failed'
+        } finally {
+            loading.value = false
         }
     }
 
     const logout = async () => {
         try {
+            loading.value = true
             await $fetch('/api/auth/logout', {method: 'POST'})
             setUser(null)
+            clearError()
         } catch (err: any) {
             error.value = err.message || 'Logout failed'
+        } finally {
+            loading.value = false
         }
     }
 
@@ -51,12 +65,15 @@ export const useAuthStore = defineStore('auth', () => {
                     headers: useRequestHeaders(['cookie']) as HeadersInit
                 })
                 setUser(data)
+                clearError()
             } catch (e) {
                 await logout()
+            } finally {
             }
         }
-        return user.value
     }
 
-    return {user, setUser, getUser, register, login, logout, fetchUser, error}
+    const getLoading = computed(() => loading.value)
+
+    return {user, setUser, getUser, register, login, logout, fetchUser, error, clearError, loading, getLoading}
 })

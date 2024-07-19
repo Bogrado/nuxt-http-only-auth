@@ -1,9 +1,9 @@
 // server/api/auth/register.post.ts
 export default defineEventHandler(async (event) => {
-    const body = await readBody<{ email: string; password: string; rememberMe: boolean; }>(event)
+    const body = await readBody(event)
     const config = useRuntimeConfig()
 
-    const {email, password} = body
+    const {email, password, nickName} = body
 
     try {
         const response = await $fetch(`${config.public.baseUrl}/register`, {
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: {email, password}
+            body: {email, password, nickName}
         })
 
         return response
