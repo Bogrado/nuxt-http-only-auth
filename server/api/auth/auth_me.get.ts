@@ -1,3 +1,4 @@
+// server/api/auth/auth_me.get.ts
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const token = getCookie(event, config.public.cookieName)
@@ -18,5 +19,5 @@ export default defineEventHandler(async (event) => {
         console.log(e)
     }
 
-    return userData
+    return userData // возвращает объект пользователя
 })

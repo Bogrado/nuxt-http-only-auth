@@ -2,14 +2,12 @@
 export default defineEventHandler((event) => {
     const config = useRuntimeConfig()
 
-    deleteCookie(event, config.public.cookieName, {
+    deleteCookie(event, config.public.cookieName, { // очищает куки
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
         secure: process.env.NODE_ENV === 'production'
     })
 
-    return {
-        user: null
-    }
+    return null
 })

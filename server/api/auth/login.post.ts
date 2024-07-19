@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    setCookie(event, config.public.cookieName, authToken.token, {
+    setCookie(event, config.public.cookieName, authToken.token, { // устанавливает куки
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
@@ -39,5 +39,5 @@ export default defineEventHandler(async (event) => {
         expires: rememberMe ? new Date(Date.now() + config.public.cookieRememberMeExpires) : new Date(Date.now() + config.public.cookieExpires)
     })
 
-    return {}
+    return {} // ничего не возвращает
 })

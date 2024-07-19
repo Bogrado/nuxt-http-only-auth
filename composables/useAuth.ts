@@ -25,9 +25,6 @@ export const useAuth = () => {
             body: {email, password, rememberMe},
         })
 
-        console.log("login done", response.token)
-
-
         const data: any = await $fetch('/api/auth/auth_me', {
             method: 'GET'
         })
@@ -36,11 +33,10 @@ export const useAuth = () => {
     }
 
     const logout = async () => {
-        const {user}: any = await $fetch('/api/auth/logout', {
+        const data = await $fetch('/api/auth/logout', {
             method: 'POST'
         })
-
-        authStore.setUser(user)
+        authStore.setUser(data)
     }
 
     const fetchUser = async () => {

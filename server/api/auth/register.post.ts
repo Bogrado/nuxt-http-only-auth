@@ -11,8 +11,8 @@ export default defineEventHandler(async (event) => {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: {email, password} // Преобразуем тело запроса в строку
+        body: {email, password}
     })
 
-    return response
+    return {} // возвращает ничего
 })
