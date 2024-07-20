@@ -38,6 +38,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'authorized'
+})
 const nickName = ref('')
 const email = ref('')
 const password = ref('')

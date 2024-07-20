@@ -1,8 +1,10 @@
+import {useLoadingStore} from "~/stores/loadingStore";
+
 export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
+    const {setLoading} = useLoadingStore()
     const user = ref<{} | null>(null)
     const error = ref<string | null>(null)
-    const loading = ref<boolean>(false)
 
     const setUser = (userData: {} | null) => {
         user.value = userData
@@ -12,22 +14,23 @@ export const useAuthStore = defineStore('auth', () => {
     const clearError = () => error.value = null
 
     const register = async (userData: Record<string, any>) => {
-        loading.value = true
+        clearError()
+        setLoading(true)
         try {
             await $fetch('/api/auth/register', {
                 method: 'POST',
                 body: userData,
             })
-            clearError()
         } catch (err: any) {
             error.value = err.data?.message || 'Registration failed'
         } finally {
-            loading.value = false
+            setLoading(false)
         }
     }
 
     const login = async (credentials: { email: string; password: string; rememberMe?: boolean }) => {
-        loading.value = true
+        clearError()
+        setLoading(true)
         try {
             await $fetch('/api/auth/login', {
                 method: 'POST',
@@ -35,28 +38,28 @@ export const useAuthStore = defineStore('auth', () => {
             })
             const data: {} = await $fetch('/api/auth/auth_me', {method: 'GET'})
             setUser(data)
-            clearError()
         } catch (err: any) {
             error.value = err.data?.message || 'Login failed'
         } finally {
-            loading.value = false
+            setLoading(false)
         }
     }
 
     const logout = async () => {
+        clearError()
         try {
-            loading.value = true
+            setLoading(true)
             await $fetch('/api/auth/logout', {method: 'POST'})
             setUser(null)
-            clearError()
         } catch (err: any) {
             error.value = err.message || 'Logout failed'
         } finally {
-            loading.value = false
+            setLoading(false)
         }
     }
 
     const fetchUser = async () => {
+        clearError()
         const token = useCookie(config.public.cookieName)
         if (!user.value && token.value) {
             try {
@@ -65,7 +68,6 @@ export const useAuthStore = defineStore('auth', () => {
                     headers: useRequestHeaders(['cookie']) as HeadersInit
                 })
                 setUser(data)
-                clearError()
             } catch (e) {
                 await logout()
             } finally {
@@ -73,7 +75,5 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    const getLoading = computed(() => loading.value)
-
-    return {user, setUser, getUser, register, login, logout, fetchUser, error, clearError, loading, getLoading}
+    return {user, setUser, getUser, register, login, logout, fetchUser, error, clearError }
 })
