@@ -1,26 +1,24 @@
-import {useValidation} from "~/composables/validation/useValidation";
 import {email, minLength, required} from "@vuelidate/validators";
+import {useVuelidate} from "@vuelidate/core";
 
 export const useLoginForm = () => {
     const {error} = useAuth()
     const state = reactive({
         email: '',
-        password: ''
+        password: '',
+        rememberMe: false
     })
-    const rememberMe = ref(false)
 
     const rules = {
         email: {required, email},
         password: {required, minLength: minLength(5)}
     }
 
-    const {v$, validateForm} = useValidation(rules, state)
+    const v$ = useVuelidate(rules, state)
 
     return {
         state,
-        rememberMe,
         error,
-        v$,
-        validateForm
+        v$
     }
 }

@@ -6,10 +6,12 @@
   <div class="min-h-screen flex flex-col bg-gray-100">
     <header
         class="px-4 py-4 sm:px-10 sm:py-8 top-0 z-20 flex items-center justify-between p-3 border-b bg-gray-800 border-gray-200">
-      <nuxt-link to="/" class="mx-2 text-blue-500 hover:underline">Home</nuxt-link>
-      <nuxt-link to="/dashboard" class="mx-2 text-blue-500 hover:underline">Dashboard</nuxt-link>
-      <nuxt-link to="/register" class="mx-2 text-blue-500 hover:underline">Register</nuxt-link>
-      <nuxt-link to="/login" class="mx-2 text-blue-500 hover:underline">Login</nuxt-link>
+      <nuxt-link to="/" active-class="text-white" class="mx-2 text-blue-500 hover:underline">Home</nuxt-link>
+      <nuxt-link to="/dashboard" active-class="text-white" class="mx-2 text-blue-500 hover:underline">Dashboard
+      </nuxt-link>
+      <nuxt-link to="/register" active-class="text-white" class="mx-2 text-blue-500 hover:underline">Register
+      </nuxt-link>
+      <nuxt-link to="/login" active-class="text-white" class="mx-2 text-blue-500 hover:underline">Login</nuxt-link>
     </header>
 
     <main v-auto-animate class="flex-1 container mx-auto p-4">

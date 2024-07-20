@@ -19,8 +19,8 @@ const loading = computed(() => loadingStore.loading)
 
 const handleRegister = async (event: any) => {
   await register(event)
-  if (!error.value && user.value) {
-    navigateTo('/dashboard')
+  if (!error.value) {
+    navigateTo('/login')
   }
 
 }

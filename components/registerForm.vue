@@ -10,10 +10,10 @@ defineProps({
 
 const emit = defineEmits(['handleSubmit'])
 
-const {state, error, v$, validateForm} = useRegisterForm()
+const {state, error, v$} = useRegisterForm()
 
 const handleSubmit = async () => {
-  if (await validateForm()) {
+  if (await v$.value.$validate()) {
     emit('handleSubmit', {nickName: state.nickName, email: state.email, password: state.password})
   }
 }
@@ -32,6 +32,9 @@ const handleSubmit = async () => {
           :class="{ 'border-red-500': v$.nickName.$error }"
           class="mt-1 block w-full p-2 border rounded bg-gray-700 text-white border-gray-600"
           required
+          :disabled="loading"
+          :readonly="loading"
+          :tabindex="loading ? -1 : 0"
       />
       <span v-if="v$.nickName.$error" class="text-red-500 text-sm">Некорректное имя</span>
     </div>
@@ -45,6 +48,9 @@ const handleSubmit = async () => {
           :class="{ 'border-red-500': v$.email.$error }"
           class="mt-1 block w-full p-2 border rounded bg-gray-700 text-white border-gray-600"
           required
+          :disabled="loading"
+          :readonly="loading"
+          :tabindex="loading ? -1 : 0"
       />
       <span v-if="v$.email.$error" class="text-red-500 text-sm">Некорректный email</span>
     </div>
@@ -58,6 +64,9 @@ const handleSubmit = async () => {
           :class="{ 'border-red-500': v$.password.$error }"
           class="mt-1 block w-full p-2 border rounded bg-gray-700 text-white border-gray-600"
           required
+          :disabled="loading"
+          :readonly="loading"
+          :tabindex="loading ? -1 : 0"
       />
       <span v-if="v$.password.$error" class="text-red-500 text-sm">Некорректный пароль</span>
     </div>
@@ -71,21 +80,31 @@ const handleSubmit = async () => {
           :class="{ 'border-red-500': v$.confirmPassword.$error }"
           class="mt-1 block w-full p-2 border rounded bg-gray-700 text-white border-gray-600"
           required
+          :disabled="loading"
+          :readonly="loading"
+          :tabindex="loading ? -1 : 0"
       />
       <span v-if="v$.confirmPassword.$error" class="text-red-500 text-sm">Пароли не совпадают или поле пустое</span>
     </div>
-    <button
-        type="submit"
-        class="w-full bg-yellow-500 text-black py-2 rounded hover:bg-yellow-600 transition"
-    >
-      Зарегистрироваться
-    </button>
+    <div v-auto-animate>
+      <div class="w-full bg-yellow-500 text-black py-2 rounded hover:bg-yellow-600" v-if="loading">
+        <v-preloader/>
+      </div>
+      <button
+          v-else
+          type="submit"
+          class="w-full bg-yellow-500 text-black py-2 rounded hover:bg-yellow-600 transition"
+      >
+        Зарегистрироваться
+      </button>
+    </div>
     <div class="text-center text-gray-400 mt-4">
       <span>Уже есть учетная запись?</span>
       <button
           type="button"
           class="w-full mt-2 py-2 border border-gray-600 rounded text-gray-300 hover:bg-gray-700 transition"
           @click="navigateTo('/login')"
+          :disabled="loading"
       >
         Войти
       </button>

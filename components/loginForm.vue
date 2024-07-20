@@ -10,10 +10,10 @@ defineProps({
 
 const emit = defineEmits(['handleSubmit'])
 
-const {state, rememberMe, error, v$, validateForm} = useLoginForm()
+const {state, error, v$} = useLoginForm()
 
 const handleSubmit = async () => {
-  if (await validateForm()) {
+  if (await v$.value.$validate()) {
     emit('handleSubmit', state)
   }
 }
@@ -33,6 +33,9 @@ const handleSubmit = async () => {
             @blur="v$.email.$touch"
             :class="{ 'border-red-500': v$.email.$error }"
             class="mt-1 block w-full p-2 border rounded bg-gray-700 text-white border-gray-600"
+            :disabled="loading"
+            :readonly="loading"
+            :tabindex="loading ? -1 : 0"
         />
         <span v-if="v$.email.$error" class="text-red-500 text-sm">Некорректный email</span>
       </div>
@@ -45,12 +48,16 @@ const handleSubmit = async () => {
             @blur="v$.password.$touch"
             :class="{ 'border-red-500': v$.password.$error }"
             class="mt-1 block w-full p-2 border rounded bg-gray-700 text-white border-gray-600"
+            :disabled="loading"
+            :readonly="loading"
+            :tabindex="loading ? -1 : 0"
         />
         <span v-if="v$.password.$error" class="text-red-500 text-sm">Некорректный пароль</span>
       </div>
       <div class="flex items-center justify-between text-gray-400">
         <label class="inline-flex items-center">
-          <input type="checkbox" v-model="rememberMe" class="form-checkbox bg-gray-700 text-blue-500 border-gray-600"/>
+          <input type="checkbox" v-model="state.rememberMe"
+                 class="form-checkbox bg-gray-700 text-blue-500 border-gray-600"/>
           <span class="ml-2">Запомнить меня</span>
         </label>
         <a href="#" class="hover:text-white">Забыли пароль?</a>
@@ -73,6 +80,7 @@ const handleSubmit = async () => {
             type="button"
             class="w-full mt-2 py-2 border border-gray-600 rounded text-gray-300 hover:bg-gray-700 transition"
             @click="navigateTo('/register')"
+            :disabled="loading"
         >
           Зарегистрироваться
         </button>
