@@ -1,58 +1,28 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center">
+  <div class="min-h-screen flex  justify-center">
     <div class="max-w-md w-full space-y-8" v-auto-animate>
       <h2 class="mt-6 text-center text-3xl font-extrabold">Register</h2>
-      <v-preloader v-if="loading"/>
-      <form @submit.prevent="handleRegister" v-else>
-        <div class="rounded-md shadow-sm -space-y-px">
-          <div>
-            <label for="nickName" class="sr-only">Nickname</label>
-            <input v-model="nickName" id="nickName" name="nickName" type="text" autocomplete="nickName" required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                   placeholder="Nickname">
-          </div>
-          <div>
-            <label for="email" class="sr-only">Email address</label>
-            <input v-model="email" id="email" name="email" type="email" autocomplete="email" required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                   placeholder="Email address">
-          </div>
-          <div>
-            <label for="password" class="sr-only">Password</label>
-            <input v-model="password" id="password" name="password" type="password" autocomplete="current-password"
-                   required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                   placeholder="Password">
-          </div>
-        </div>
-        <div v-if="error" class="text-red-500">{{ error }}</div>
-        <div>
-          <button type="submit"
-                  class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            Register
-          </button>
-        </div>
-      </form>
+      <register-form :loading="loading" @handle-submit="handleRegister ( $event )"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+
 definePageMeta({
   middleware: 'authorized'
 })
-const nickName = ref('')
-const email = ref('')
-const password = ref('')
-const {register, error, clearError} = useAuth()
-const auth = useAuthStore()
-const loading = computed(() => auth.getLoading)
 
-const handleRegister = async () => {
-  await register({nickName: nickName.value, email: email.value, password: password.value})
-  if (!error.value) {
-    navigateTo('/login')
+const {register, error, user} = useAuth()
+const loadingStore = useLoadingStore()
+const loading = computed(() => loadingStore.loading)
+
+const handleRegister = async (event: any) => {
+  await register(event)
+  if (!error.value && user.value) {
+    navigateTo('/dashboard')
   }
+
 }
 
 onMounted(() => {

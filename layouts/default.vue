@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div v-auto-animate class="min-h-screen flex flex-col bg-gray-100">
+  <div class="min-h-screen flex flex-col bg-gray-100">
     <header
         class="px-4 py-4 sm:px-10 sm:py-8 top-0 z-20 flex items-center justify-between p-3 border-b bg-gray-800 border-gray-200">
       <nuxt-link to="/" class="mx-2 text-blue-500 hover:underline">Home</nuxt-link>

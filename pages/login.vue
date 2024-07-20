@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center">
+  <div class="min-h-screen flex  justify-center">
     <div class="max-w-md w-full space-y-8" v-auto-animate>
       <h2 class="mt-6 text-center text-3xl font-extrabold">Login</h2>
       <login-form @handle-submit="handleLogin( $event )" :loading="loading"/>

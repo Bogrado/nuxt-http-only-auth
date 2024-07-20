@@ -21,7 +21,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div v-auto-animate>
+  <div>
     <form @submit.prevent="handleSubmit" class="space-y-4 bg-gray-800 p-6 rounded shadow-lg">
       <h2 class="text-white text-lg font-bold mb-4">Войти с учетной записью</h2>
       <div class="min-h-[6rem]">
