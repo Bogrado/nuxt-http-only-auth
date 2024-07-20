@@ -12,7 +12,7 @@ export default defineNuxtConfig({
         enabled: true
       }
     },
-    modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
+    modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@formkit/auto-animate'],
     router: {
         middleware: 'auth'
     },
