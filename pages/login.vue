@@ -13,7 +13,7 @@ definePageMeta({
   middleware: 'authorized'
 })
 
-const {login, error, user} = useAuth()
+const {login, clearError, error, user} = useAuth()
 const loadingStore = useLoadingStore()
 const loading = computed(() => loadingStore.loading)
 const handleLogin = async (event: any) => {
