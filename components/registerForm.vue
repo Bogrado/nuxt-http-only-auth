@@ -109,7 +109,7 @@ const handleSubmit = async () => {
         Войти
       </button>
     </div>
-    <div class="min-h-[1rem]">
+    <div class="min-h-[2rem] text-center ">
       <p v-if="error" class="text-red-500 mt-4 text-sm">{{ error }}</p>
     </div>
   </form>
