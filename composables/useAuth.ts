@@ -1,6 +1,11 @@
 export const useAuth = () => {
     const authStore = useAuthStore()
 
+    interface User {
+        [key: string]: any
+    }
+
+
     const register = async (userData: Record<string, any>) => await authStore.register(userData)
 
     const login = async (credentials: {
@@ -15,7 +20,7 @@ export const useAuth = () => {
 
     const clearError = () => authStore.clearError()
 
-    const user = computed(() => authStore.getUser)
+    const user = computed<User | null>(() => authStore.getUser)
     const error = computed(() => authStore.error)
 
     return {user, register, login, logout, fetchUser, error, clearError}

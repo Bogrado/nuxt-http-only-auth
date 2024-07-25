@@ -3,7 +3,7 @@ import {useLoadingStore} from "~/stores/loadingStore";
 export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
     const {setLoading} = useLoadingStore()
-    const user = ref<{} | null>(null)
+    const user = ref<Object | null>(null)
     const error = ref<string | null>(null)
 
     const setUser = (userData: {} | null) => {

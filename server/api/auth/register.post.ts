@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: {email, password, nickName}
+            body: {email, password, nickName, role: 'user'}
         })
 
         return response
