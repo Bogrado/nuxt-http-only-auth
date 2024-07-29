@@ -3,5 +3,15 @@ declare module '@nuxt/schema' {
         router?: {
             middleware?: string | string[];
         };
+        plugins?: string[];
+        compatibilityDate?: string;
+        runtimeConfig?: {
+            public?: {
+                baseUrl?: string;
+                cookieName?: string;
+                cookieExpires?: number;
+                cookieRememberMeExpires?: number;
+            }
+        }
     }
 }
