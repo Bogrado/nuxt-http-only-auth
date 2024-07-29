@@ -1,5 +1,3 @@
-import {useLoadingStore} from "~/stores/loadingStore";
-
 export const useAuthStore = defineStore('auth', () => {
     const config = useRuntimeConfig()
     const {setLoading} = useLoadingStore()
